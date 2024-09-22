@@ -26,13 +26,9 @@ describe("Edit Question Use Case", () => {
 
 		const editedQuestion = await inMemoryQuestionsRepository.findById(newQuestion.id.toString());
 
-		if (!editedQuestion) {
-			throw new Error("Question not found");
-		}
-
 		expect(editedQuestion).toBeTruthy();
-		expect(editedQuestion.content).toBe("New content");
-		expect(editedQuestion.title).toBe("New title");
+		expect(editedQuestion?.content).toBe("New content");
+		expect(editedQuestion?.title).toBe("New title");
 	});
 
 	it("should not be able to edit another user's question", async () => {

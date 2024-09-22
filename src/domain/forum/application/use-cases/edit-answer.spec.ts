@@ -25,12 +25,8 @@ describe("Edit Answer Use Case", () => {
 
 		const editedAnswer = await inMemoryAnswersRepository.findById(newAnswer.id.toString());
 
-		if (!editedAnswer) {
-			throw new Error("Answer not found");
-		}
-
 		expect(editedAnswer).toBeTruthy();
-		expect(editedAnswer.content).toBe("New content");
+		expect(editedAnswer?.content).toBe("New content");
 	});
 
 	it("should not be able to edit another user's answer", async () => {
