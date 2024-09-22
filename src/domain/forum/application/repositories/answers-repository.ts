@@ -1,5 +1,5 @@
-import type { Answer } from "../forum/enterprise/entities/answer";
+import type { Answer } from "../../../forum/enterprise/entities/answer";
 
-export interface AnswerRepository {
+export interface AnswersRepository {
 	create(answer: Answer): Promise<void>;
 }

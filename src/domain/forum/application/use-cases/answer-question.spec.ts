@@ -1,9 +1,9 @@
 import { AnswerQuestionUseCase } from "./answer-question";
 
-import type { Answer } from "../forum/enterprise/entities/answer";
-import type { AnswerRepository } from "../repositories/answers-repository";
+import type { Answer } from "../../../forum/enterprise/entities/answer";
+import type { AnswersRepository } from "../repositories/answers-repository";
 
-const fakeAnswersRepository: AnswerRepository = {
+const fakeAnswersRepository: AnswersRepository = {
 	create: async (answer: Answer) => {
 		return;
 	},
@@ -12,7 +12,7 @@ const fakeAnswersRepository: AnswerRepository = {
 test("create an answer", async () => {
 	const answerQuestion = new AnswerQuestionUseCase(fakeAnswersRepository);
 
-	const answer = await answerQuestion.execute({
+	const { answer } = await answerQuestion.execute({
 		instructorId: "1",
 		questionId: "1",
 		content: "Answer content",
