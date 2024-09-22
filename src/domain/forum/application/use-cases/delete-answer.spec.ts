@@ -52,5 +52,7 @@ describe("Delete Answer Use Case", () => {
 				authorId: new UniqueEntityId("author-2").toString(),
 			});
 		}).rejects.toBeInstanceOf(Error);
+
+		expect(inMemoryAnswersRepository.items).toHaveLength(1);
 	});
 });

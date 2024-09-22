@@ -1,40 +1,41 @@
 import { UniqueEntityId } from "@/core/entities/unique-entity-id";
 import { makeQuestion } from "test/factories/make-question";
 import { InMemoryQuestionsRepository } from "test/repositories/in-memory-questions-repository";
-import { DeleteQuestionUseCase } from "./delete-question";
+import { EditQuestionUseCase } from "./edit-question";
 
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository;
-let sut: DeleteQuestionUseCase;
+let sut: EditQuestionUseCase;
 
-describe("Delete Question Use Case", () => {
+describe("Edit Question Use Case", () => {
 	beforeEach(() => {
 		inMemoryQuestionsRepository = new InMemoryQuestionsRepository();
-		sut = new DeleteQuestionUseCase(inMemoryQuestionsRepository);
+		sut = new EditQuestionUseCase(inMemoryQuestionsRepository);
 	});
 
-	it("should be able to delete a question", async () => {
-		const newQuestion = makeQuestion({
-			authorId: new UniqueEntityId("author-1"),
-		});
+	it("should be able to edit a question", async () => {
+		const newQuestion = makeQuestion();
 
 		inMemoryQuestionsRepository.create(newQuestion);
-
-		const question = await inMemoryQuestionsRepository.findById(newQuestion.id.toString());
-
-		expect(question).toBeTruthy();
 
 		await sut.execute({
 			questionId: newQuestion.id.toString(),
 			authorId: newQuestion.authorId.toString(),
+			content: "New content",
+			title: "New title",
 		});
 
-		const deletedQuestion = await inMemoryQuestionsRepository.findById(newQuestion.id.toString());
+		const editedQuestion = await inMemoryQuestionsRepository.findById(newQuestion.id.toString());
 
-		expect(deletedQuestion).toBeNull();
-		expect(inMemoryQuestionsRepository.items).toHaveLength(0);
+		if (!editedQuestion) {
+			throw new Error("Question not found");
+		}
+
+		expect(editedQuestion).toBeTruthy();
+		expect(editedQuestion.content).toBe("New content");
+		expect(editedQuestion.title).toBe("New title");
 	});
 
-	it("should not be able to delete another user's question", async () => {
+	it("should not be able to edit another user's question", async () => {
 		const newQuestion = makeQuestion({
 			authorId: new UniqueEntityId("author-1"),
 		});
@@ -49,6 +50,8 @@ describe("Delete Question Use Case", () => {
 			return sut.execute({
 				questionId: newQuestion.id.toString(),
 				authorId: new UniqueEntityId("author-2").toString(),
+				content: "New content",
+				title: "New title",
 			});
 		}).rejects.toBeInstanceOf(Error);
 
