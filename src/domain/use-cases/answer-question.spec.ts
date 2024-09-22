@@ -20,10 +20,5 @@ test("create an answer", async () => {
 		content: "Answer content",
 	});
 
-	expect(answer).toEqual(
-		expect.objectContaining({
-			id: expect.any(String),
-			content: "Answer content",
-		}),
-	);
+	expect(answer.content).toEqual("Answer content");
 });
