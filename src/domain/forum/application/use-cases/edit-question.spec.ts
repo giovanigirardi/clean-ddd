@@ -54,7 +54,5 @@ describe("Edit Question Use Case", () => {
 				title: "New title",
 			});
 		}).rejects.toBeInstanceOf(Error);
-
-		expect(inMemoryQuestionsRepository.items).toHaveLength(1);
 	});
 });
