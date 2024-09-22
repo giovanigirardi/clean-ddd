@@ -41,7 +41,7 @@ describe("Get Question By Slug Use Case", () => {
 		});
 
 		expect(question.id).toBeTruthy();
-		expect(question.title).toEqual("Title");
-		expect(question.content).toEqual("Content");
+		expect(question.title).toEqual(newQuestion.title);
+		expect(question.content).toEqual(newQuestion.content);
 	});
 });

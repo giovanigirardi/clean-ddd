@@ -15,6 +15,9 @@ importers:
       '@biomejs/biome':
         specifier: 1.9.2
         version: 1.9.2
+      '@faker-js/faker':
+        specifier: 9.0.1
+        version: 9.0.1
       '@types/lodash-es':
         specifier: 4.17.12
         version: 4.17.12
@@ -229,6 +232,10 @@ packages:
     engines: {node: '>=12'}
     cpu: [x64]
     os: [win32]
+
+  '@faker-js/faker@9.0.1':
+    resolution: {integrity: sha512-4mDeYIgM3By7X6t5E6eYwLAa+2h4DeZDF7thhzIg6XB76jeEvMwadYAMCFJL/R4AnEBcAUO9+gL0vhy3s+qvZA==}
+    engines: {node: '>=18.0.0', npm: '>=9.0.0'}
 
   '@jridgewell/sourcemap-codec@1.5.0':
     resolution: {integrity: sha512-gv3ZRaISU3fjPAgNsriBRqGWQL6quFx04YMPW/zD8XMLsU32mhCCbfbO6KZFLjvYpCZ8zyDEgqsgf+PwPaM7GQ==}
@@ -673,6 +680,8 @@ snapshots:
 
   '@esbuild/win32-x64@0.21.5':
     optional: true
+
+  '@faker-js/faker@9.0.1': {}
 
   '@jridgewell/sourcemap-codec@1.5.0': {}
 
