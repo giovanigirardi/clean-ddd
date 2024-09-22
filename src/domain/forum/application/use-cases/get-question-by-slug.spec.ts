@@ -1,7 +1,5 @@
-import { UniqueEntityId } from "@/core/entities/unique-entity-id";
+import { makeQuestion } from "test/factories/make-question";
 import { InMemoryQuestionsRepository } from "test/repositories/in-memory-questions-repository";
-
-import { Question } from "../../enterprise/entities/question";
 import { Slug } from "../../enterprise/entities/value-objects/slug";
 import { GetQuestionBySlugUseCase } from "./get-question-by-slug";
 
@@ -15,10 +13,9 @@ describe("Get Question By Slug Use Case", () => {
 	});
 
 	it("should be able to get a question by its slug", async () => {
-		const newQuestion = Question.create({
-			authorId: new UniqueEntityId("1"),
-			content: "Question content",
+		const newQuestion = makeQuestion({
 			title: "Question title",
+			content: "Question content",
 		});
 
 		inMemoryQuestionsRepository.create(newQuestion);
@@ -33,10 +30,7 @@ describe("Get Question By Slug Use Case", () => {
 	});
 
 	it("should be able to get a question with a custom slug by its slug", async () => {
-		const newQuestion = Question.create({
-			authorId: new UniqueEntityId("1"),
-			content: "Question content",
-			title: "Question title",
+		const newQuestion = makeQuestion({
 			slug: Slug.createFromText("custom-slug"),
 		});
 
@@ -47,7 +41,7 @@ describe("Get Question By Slug Use Case", () => {
 		});
 
 		expect(question.id).toBeTruthy();
-		expect(question.title).toEqual("Question title");
-		expect(question.content).toEqual("Question content");
+		expect(question.title).toEqual("Title");
+		expect(question.content).toEqual("Content");
 	});
 });
