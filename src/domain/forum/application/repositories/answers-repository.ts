@@ -1,4 +1,4 @@
-import type { Answer } from "../entities/answer";
+import type { Answer } from "../forum/enterprise/entities/answer";
 
 export interface AnswerRepository {
 	create(answer: Answer): Promise<void>;
