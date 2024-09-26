@@ -6,10 +6,12 @@ import { Slug } from "./value-objects/slug";
 
 import type { UniqueEntityId } from "@/core/entities/unique-entity-id";
 import type { Optional } from "@/core/types/optional";
+import type { QuestionAttachment } from "./question-attachment";
 
 export interface QuestionProps {
 	authorId: UniqueEntityId;
 	bestAnswerId?: UniqueEntityId;
+	attachments: QuestionAttachment[];
 	title: string;
 	content: string;
 	slug: Slug;
@@ -54,6 +56,10 @@ export class Question extends AggregateRoot<QuestionProps> {
 		return this.props.content.substring(0, 120).trimEnd().concat("...");
 	}
 
+	get attachments() {
+		return this.props.attachments;
+	}
+
 	private touch() {
 		this.props.updatedAt = new Date();
 	}
@@ -74,12 +80,18 @@ export class Question extends AggregateRoot<QuestionProps> {
 		this.touch();
 	}
 
-	static create(props: Optional<QuestionProps, "createdAt" | "slug">, id?: UniqueEntityId) {
+	set attachments(value: QuestionAttachment[]) {
+		this.props.attachments = value;
+		this.touch();
+	}
+
+	static create(props: Optional<QuestionProps, "createdAt" | "slug" | "attachments">, id?: UniqueEntityId) {
 		const question = new Question(
 			{
 				...props,
 				slug: props.slug ?? Slug.createFromText(props.title),
 				createdAt: props.createdAt ?? new Date(),
+				attachments: props.attachments ?? [],
 			},
 			id,
 		);
