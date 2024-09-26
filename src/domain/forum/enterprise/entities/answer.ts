@@ -1,4 +1,4 @@
-import { Entity } from "@/core/entities/entity";
+import { AggregateRoot } from "@/core/entities/aggregate-root";
 
 import type { UniqueEntityId } from "@/core/entities/unique-entity-id";
 import type { Optional } from "@/core/types/optional";
@@ -11,7 +11,7 @@ export interface AnswerProps {
 	updatedAt?: Date;
 }
 
-export class Answer extends Entity<AnswerProps> {
+export class Answer extends AggregateRoot<AnswerProps> {
 	get content(): string {
 		return this.props.content;
 	}

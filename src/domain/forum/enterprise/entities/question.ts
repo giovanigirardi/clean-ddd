@@ -1,7 +1,9 @@
 import dayjs from "dayjs";
-import { Slug } from "./value-objects/slug";
 
 import { AggregateRoot } from "@/core/entities/aggregate-root";
+
+import { Slug } from "./value-objects/slug";
+
 import type { UniqueEntityId } from "@/core/entities/unique-entity-id";
 import type { Optional } from "@/core/types/optional";
 
