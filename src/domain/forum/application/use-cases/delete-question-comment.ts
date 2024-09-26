@@ -1,26 +1,34 @@
+import { type Either, left, right } from "@/core/either";
 import type { QuestionCommentsRepository } from "../repositories/question-comments-repository";
+import { NotAllowedError } from "./errors/not-allowed-error";
+import { ResourceNotFoundError } from "./errors/resource-not-found";
 
 interface DeleteQuestionCommentUseCaseRequest {
 	authorId: string;
 	questionCommentId: string;
 }
 
+type DeleteQuestionCommentUseCaseResponse = Either<ResourceNotFoundError | NotAllowedError, { [k: string]: never }>;
+
 export class DeleteQuestionCommentUseCase {
 	constructor(private questionCommentsRepository: QuestionCommentsRepository) {}
 
-	async execute({ authorId, questionCommentId }: DeleteQuestionCommentUseCaseRequest) {
+	async execute({
+		authorId,
+		questionCommentId,
+	}: DeleteQuestionCommentUseCaseRequest): Promise<DeleteQuestionCommentUseCaseResponse> {
 		const questionComment = await this.questionCommentsRepository.findById(questionCommentId);
 
 		if (!questionComment) {
-			throw new Error("Question comment not found");
+			return left(new ResourceNotFoundError());
 		}
 
 		if (questionComment.authorId.toString() !== authorId) {
-			throw new Error("You can only delete your own comments");
+			return left(new NotAllowedError());
 		}
 
 		await this.questionCommentsRepository.delete(questionComment);
 
-		return {};
+		return right({});
 	}
 }

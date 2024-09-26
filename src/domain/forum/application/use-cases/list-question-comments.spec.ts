@@ -27,9 +27,10 @@ describe("List Question Comments Use Case", () => {
 		inMemoryQuestionCommentsRepository.create(newComment2);
 		inMemoryQuestionCommentsRepository.create(newComment3);
 
-		const { questionComments } = await sut.execute({ questionId: newQuestion.id.toString(), page: 1 });
+		const result = await sut.execute({ questionId: newQuestion.id.toString(), page: 1 });
 
-		expect(questionComments).toHaveLength(3);
+		expect(result.isRight()).toBeTruthy();
+		expect(result.value?.questionComments).toHaveLength(3);
 	});
 
 	it("should be able to list paginated question comments", async () => {
@@ -38,8 +39,9 @@ describe("List Question Comments Use Case", () => {
 			inMemoryQuestionCommentsRepository.create(makeQuestionComment({ questionId: newQuestion.id }));
 		}
 
-		const { questionComments } = await sut.execute({ questionId: newQuestion.id.toString(), page: 2 });
+		const result = await sut.execute({ questionId: newQuestion.id.toString(), page: 2 });
 
-		expect(questionComments).toHaveLength(2);
+		expect(result.isRight()).toBeTruthy();
+		expect(result.value?.questionComments).toHaveLength(2);
 	});
 });

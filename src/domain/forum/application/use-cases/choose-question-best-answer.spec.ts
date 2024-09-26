@@ -3,6 +3,7 @@ import { makeQuestion } from "test/factories/make-question";
 import { InMemoryAnswersRepository } from "test/repositories/in-memory-answers-repository";
 import { InMemoryQuestionsRepository } from "test/repositories/in-memory-questions-repository";
 import { ChooseQuestionBestAnswerUseCase } from "./choose-question-best-answer";
+import { NotAllowedError } from "./errors/not-allowed-error";
 
 let inMemoryAnswersRepository: InMemoryAnswersRepository;
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository;
@@ -24,13 +25,14 @@ describe("Choose Question Best Answer Use Case", () => {
 		inMemoryQuestionsRepository.create(newQuestion);
 		inMemoryAnswersRepository.create(newAnswer);
 
-		await sut.execute({
+		const result = await sut.execute({
 			answerId: newAnswer.id.toString(),
 			authorId: newQuestion.authorId.toString(),
 		});
 
 		const editedQuestion = await inMemoryQuestionsRepository.findById(newQuestion.id.toString());
 
+		expect(result.isRight()).toBeTruthy();
 		expect(editedQuestion).toBeTruthy();
 		expect(editedQuestion?.bestAnswerId?.toString()).toBe(newAnswer.id.toString());
 	});
@@ -44,15 +46,15 @@ describe("Choose Question Best Answer Use Case", () => {
 		inMemoryQuestionsRepository.create(newQuestion);
 		inMemoryAnswersRepository.create(newAnswer);
 
-		expect(() => {
-			return sut.execute({
-				answerId: newAnswer.id.toString(),
-				authorId: "another-author-id",
-			});
-		}).rejects.toBeInstanceOf(Error);
+		const result = await sut.execute({
+			answerId: newAnswer.id.toString(),
+			authorId: "another-author-id",
+		});
 
 		const editedQuestion = await inMemoryQuestionsRepository.findById(newQuestion.id.toString());
 
+		expect(result.isLeft()).toBeTruthy();
+		expect(result.value).toBeInstanceOf(NotAllowedError);
 		expect(editedQuestion).toBeTruthy();
 		expect(editedQuestion?.bestAnswerId).toBeUndefined();
 	});

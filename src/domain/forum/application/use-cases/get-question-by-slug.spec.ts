@@ -1,5 +1,6 @@
 import { makeQuestion } from "test/factories/make-question";
 import { InMemoryQuestionsRepository } from "test/repositories/in-memory-questions-repository";
+import type { Question } from "../../enterprise/entities/question";
 import { Slug } from "../../enterprise/entities/value-objects/slug";
 import { GetQuestionBySlugUseCase } from "./get-question-by-slug";
 
@@ -20,13 +21,14 @@ describe("Get Question By Slug Use Case", () => {
 
 		inMemoryQuestionsRepository.create(newQuestion);
 
-		const { question } = await sut.execute({
+		const result = await sut.execute({
 			slug: "question-title",
 		});
 
-		expect(question.id).toBeTruthy();
-		expect(question.title).toEqual("Question title");
-		expect(question.content).toEqual("Question content");
+		expect(result.isRight()).toBeTruthy();
+		expect((result.value as { question: Question }).question.id).toBeTruthy();
+		expect((result.value as { question: Question }).question.title).toEqual("Question title");
+		expect((result.value as { question: Question }).question.content).toEqual("Question content");
 	});
 
 	it("should be able to get a question with a custom slug by its slug", async () => {
@@ -36,12 +38,13 @@ describe("Get Question By Slug Use Case", () => {
 
 		inMemoryQuestionsRepository.create(newQuestion);
 
-		const { question } = await sut.execute({
+		const result = await sut.execute({
 			slug: "custom-slug",
 		});
 
-		expect(question.id).toBeTruthy();
-		expect(question.title).toEqual(newQuestion.title);
-		expect(question.content).toEqual(newQuestion.content);
+		expect(result.isRight()).toBeTruthy();
+		expect((result.value as { question: Question }).question.id).toBeTruthy();
+		expect((result.value as { question: Question }).question.title).toEqual(newQuestion.title);
+		expect((result.value as { question: Question }).question.content).toEqual(newQuestion.content);
 	});
 });

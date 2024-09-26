@@ -26,9 +26,10 @@ describe("List Recent Questions Use Case", () => {
 		inMemoryAnswersRepository.create(newAnswer2);
 		inMemoryAnswersRepository.create(newAnswer3);
 
-		const { answers } = await sut.execute({ questionId: newQuestion.id.toString(), page: 1 });
+		const result = await sut.execute({ questionId: newQuestion.id.toString(), page: 1 });
 
-		expect(answers).toHaveLength(3);
+		expect(result.isRight()).toBeTruthy();
+		expect(result.value?.answers).toHaveLength(3);
 	});
 
 	it("should be able to list paginated question answers", async () => {
@@ -37,8 +38,9 @@ describe("List Recent Questions Use Case", () => {
 			inMemoryAnswersRepository.create(makeAnswer({ questionId: newQuestion.id }));
 		}
 
-		const { answers } = await sut.execute({ questionId: newQuestion.id.toString(), page: 2 });
+		const result = await sut.execute({ questionId: newQuestion.id.toString(), page: 2 });
 
-		expect(answers).toHaveLength(2);
+		expect(result.isRight()).toBeTruthy();
+		expect(result.value?.answers).toHaveLength(2);
 	});
 });
