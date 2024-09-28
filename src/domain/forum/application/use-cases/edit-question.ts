@@ -1,4 +1,5 @@
 import { type Either, left, right } from "@/core/either";
+import { UniqueEntityId } from "@/core/entities/unique-entity-id";
 import type { Question } from "../../enterprise/entities/question";
 import { QuestionAttachment } from "../../enterprise/entities/question-attachment";
 import { QuestionAttachmentList } from "../../enterprise/entities/question-attachment-list";
@@ -45,8 +46,8 @@ export class EditQuestionUseCase {
 
 		const questionAttachments = attachmentsIds.map((attachmentId) => {
 			return QuestionAttachment.create({
-				attachmentId,
-				questionId: question.id.toString(),
+				attachmentId: new UniqueEntityId(attachmentId),
+				questionId: question.id,
 			});
 		});
 

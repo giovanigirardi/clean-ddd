@@ -40,8 +40,8 @@ describe("Edit Question Use Case", () => {
 		expect(editedQuestion).toBeTruthy();
 		expect(editedQuestion?.content).toBe("New content");
 		expect(editedQuestion?.attachments.getItems()).toEqual([
-			expect.objectContaining({ attachmentId: "attachment-1" }),
-			expect.objectContaining({ attachmentId: "attachment-3" }),
+			expect.objectContaining({ attachmentId: new UniqueEntityId("attachment-1") }),
+			expect.objectContaining({ attachmentId: new UniqueEntityId("attachment-3") }),
 		]);
 		expect(editedQuestion?.title).toBe("New title");
 	});

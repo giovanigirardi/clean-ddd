@@ -4,15 +4,18 @@ import { InMemoryQuestionCommentsRepository } from "test/repositories/in-memory-
 import { InMemoryQuestionsRepository } from "test/repositories/in-memory-questions-repository";
 
 import { ListQuestionCommentsUseCase } from "./list-question-comments";
+import { InMemoryQuestionAttachmentsRepository } from "test/repositories/in-memory-question-attachments-repository";
 
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository;
 let inMemoryQuestionCommentsRepository: InMemoryQuestionCommentsRepository;
+let inMemoryQuestionAttachmentsRepository: InMemoryQuestionAttachmentsRepository;
 let sut: ListQuestionCommentsUseCase;
 
 describe("List Question Comments Use Case", () => {
 	beforeEach(() => {
+		inMemoryQuestionAttachmentsRepository = new InMemoryQuestionAttachmentsRepository();
 		inMemoryQuestionCommentsRepository = new InMemoryQuestionCommentsRepository();
-		inMemoryQuestionsRepository = new InMemoryQuestionsRepository();
+		inMemoryQuestionsRepository = new InMemoryQuestionsRepository(inMemoryQuestionAttachmentsRepository);
 		sut = new ListQuestionCommentsUseCase(inMemoryQuestionCommentsRepository);
 	});
 

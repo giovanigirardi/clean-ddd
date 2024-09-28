@@ -2,7 +2,8 @@ import { UniqueEntityId } from "@/core/entities/unique-entity-id";
 
 import { makeAnswer } from "test/factories/make-answer";
 import { makeAnswerComment } from "test/factories/make-answer-comment";
-import { InMemoryAnswerCommentsRepository } from "test/repositories/in-memory-answer-comments-repository copy";
+import { InMemoryAnswerAttachmentsRepository } from "test/repositories/in-memory-answer-attachments-repository";
+import { InMemoryAnswerCommentsRepository } from "test/repositories/in-memory-answer-comments-repository";
 import { InMemoryAnswersRepository } from "test/repositories/in-memory-answers-repository";
 
 import { DeleteAnswerCommentUseCase } from "./delete-answer-comment";
@@ -10,12 +11,14 @@ import { NotAllowedError } from "./errors/not-allowed-error";
 
 let inMemoryAnswerCommentsRepository: InMemoryAnswerCommentsRepository;
 let inMemoryAnswersRepository: InMemoryAnswersRepository;
+let inMemoryAnswerAttachmentsRepository: InMemoryAnswerAttachmentsRepository;
 let sut: DeleteAnswerCommentUseCase;
 
 describe("Delete Answer Comment Use Case", () => {
 	beforeEach(() => {
 		inMemoryAnswerCommentsRepository = new InMemoryAnswerCommentsRepository();
-		inMemoryAnswersRepository = new InMemoryAnswersRepository();
+		inMemoryAnswerAttachmentsRepository = new InMemoryAnswerAttachmentsRepository();
+		inMemoryAnswersRepository = new InMemoryAnswersRepository(inMemoryAnswerAttachmentsRepository);
 		sut = new DeleteAnswerCommentUseCase(inMemoryAnswerCommentsRepository);
 	});
 
