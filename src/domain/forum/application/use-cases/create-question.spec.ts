@@ -23,7 +23,7 @@ describe("Create Question Use Case", () => {
 		expect(result.value?.question.id).toBeTruthy();
 		expect(result.value?.question.title).toEqual("Question title");
 		expect(result.value?.question.content).toEqual("Question content");
-		expect(result.value?.question.attachments).toEqual([
+		expect(result.value?.question.attachments.getItems()).toEqual([
 			expect.objectContaining({ attachmentId: "1" }),
 			expect.objectContaining({ attachmentId: "2" }),
 		]);
@@ -42,7 +42,7 @@ describe("Create Question Use Case", () => {
 		expect(result.value?.question.id).toBeTruthy();
 		expect(result.value?.question.title).toEqual("Question title");
 		expect(result.value?.question.content).toEqual("Question content");
-		expect(result.value?.question.attachments.length).toEqual(0);
+		expect(result.value?.question.attachments.getItems().length).toEqual(0);
 		expect(inMemoryQuestionsRepository.items.length).toEqual(1);
 	});
 });
