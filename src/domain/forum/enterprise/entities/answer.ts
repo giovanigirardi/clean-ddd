@@ -1,4 +1,6 @@
 import { AggregateRoot } from "@/core/entities/aggregate-root";
+
+import { AnswerCreatedEvent } from "../events/answer-created-event";
 import { AnswerAttachmentList } from "./answer-attachment-list";
 
 import type { UniqueEntityId } from "@/core/entities/unique-entity-id";
@@ -65,6 +67,12 @@ export class Answer extends AggregateRoot<AnswerProps> {
 			},
 			id,
 		);
+
+		const isNewAnswer = !id;
+
+		if (isNewAnswer) {
+			answer.addDomainEvent(new AnswerCreatedEvent(answer));
+		}
 
 		return answer;
 	}
