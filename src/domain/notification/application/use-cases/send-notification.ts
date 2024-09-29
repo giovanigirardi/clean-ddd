@@ -5,7 +5,7 @@ import { Notification } from "../../enterprise/entities/notification";
 
 import type { NotificationsRepository } from "../repositories/notifications-repository";
 
-interface SendNotificationUseCaseRequest {
+export interface SendNotificationUseCaseRequest {
 	recipientId: string;
 	title: string;
 	content: string;
