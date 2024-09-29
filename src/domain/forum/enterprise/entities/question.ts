@@ -2,11 +2,12 @@ import dayjs from "dayjs";
 
 import { AggregateRoot } from "@/core/entities/aggregate-root";
 
+import { QuestionBestAnswerChosenEvent } from "../events/question-best-answer-chosen-event";
+import { QuestionAttachmentList } from "./question-attachment-list";
 import { Slug } from "./value-objects/slug";
 
 import type { UniqueEntityId } from "@/core/entities/unique-entity-id";
 import type { Optional } from "@/core/types/optional";
-import { QuestionAttachmentList } from "./question-attachment-list";
 
 export interface QuestionProps {
 	authorId: UniqueEntityId;
@@ -76,7 +77,12 @@ export class Question extends AggregateRoot<QuestionProps> {
 	}
 
 	set bestAnswerId(value: UniqueEntityId | undefined) {
+		if (value && value !== this.props.bestAnswerId) {
+			this.addDomainEvent(new QuestionBestAnswerChosenEvent(this, value));
+		}
+
 		this.props.bestAnswerId = value;
+
 		this.touch();
 	}
 
