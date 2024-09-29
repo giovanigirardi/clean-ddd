@@ -1,12 +1,12 @@
 import { UniqueEntityId } from "@/core/entities/unique-entity-id";
 
 import { type Either, left, right } from "@/core/either";
+import { NotAllowedError } from "@/core/errors/not-allowed-error";
+import { ResourceNotFoundError } from "@/core/errors/resource-not-found";
 import type { Answer } from "../../enterprise/entities/answer";
 import type { Question } from "../../enterprise/entities/question";
 import type { AnswersRepository } from "../repositories/answers-repository";
 import type { QuestionsRepository } from "../repositories/questions-repository";
-import { NotAllowedError } from "./errors/not-allowed-error";
-import { ResourceNotFoundError } from "./errors/resource-not-found";
 
 interface ChooseQuestionBestAnswerUseCaseRequest {
 	answerId: string;

@@ -6,8 +6,8 @@ import { InMemoryQuestionAttachmentsRepository } from "test/repositories/in-memo
 import { InMemoryQuestionCommentsRepository } from "test/repositories/in-memory-question-comments-repository";
 import { InMemoryQuestionsRepository } from "test/repositories/in-memory-questions-repository";
 
+import { NotAllowedError } from "@/core/errors/not-allowed-error";
 import { DeleteQuestionCommentUseCase } from "./delete-question-comment";
-import { NotAllowedError } from "./errors/not-allowed-error";
 
 let inMemoryQuestionCommentsRepository: InMemoryQuestionCommentsRepository;
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository;
